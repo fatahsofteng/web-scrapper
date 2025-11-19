@@ -13,13 +13,13 @@ Each video is stored in its own directory named by the video ID:
 ```
 downloads/
 ├── Jq7llIkbJeA/                 # Video ID directory
-│   ├── Jq7llIkbJeA.wav          # Audio file
+│   ├── Jq7llIkbJeA.m4a          # Audio file (M4A, 44.1kHz)
 │   └── Jq7llIkbJeA.json         # Metadata file
 ├── dQw4w9WgXcQ/
-│   ├── dQw4w9WgXcQ.wav
+│   ├── dQw4w9WgXcQ.m4a
 │   └── dQw4w9WgXcQ.json
 └── xvFZjo5PgG0/
-    ├── xvFZjo5PgG0.wav
+    ├── xvFZjo5PgG0.m4a
     └── xvFZjo5PgG0.json
 ```
 
@@ -53,15 +53,15 @@ Each `{video_id}.json` file contains:
   "webpage_url": "https://www.youtube.com/watch?v=Jq7llIkbJeA",
 
   "audio": {
-    "codec": "wav",
-    "sample_rate": 48000,
+    "codec": "m4a",
+    "sample_rate": 44100,
     "channels": 1,
     "original_codec": "opus",
     "original_sample_rate": 48000,
     "original_bitrate": 160000,
-    "file_name": "Jq7llIkbJeA.wav",
-    "file_size": 32123442,
-    "file_path": "Jq7llIkbJeA/Jq7llIkbJeA.wav"
+    "file_name": "Jq7llIkbJeA.m4a",
+    "file_size": 14256789,
+    "file_path": "Jq7llIkbJeA/Jq7llIkbJeA.m4a"
   }
 }
 ```
@@ -88,14 +88,14 @@ Each `{video_id}.json` file contains:
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
-| `codec` | string | Output audio codec | `"wav"` |
-| `sample_rate` | number | Output sample rate (Hz) | `48000` |
+| `codec` | string | Output audio codec | `"m4a"` |
+| `sample_rate` | number | Output sample rate (Hz) | `44100` |
 | `channels` | number | Number of audio channels | `1` (mono) |
 | `original_codec` | string | YouTube's original codec | `"opus"` |
 | `original_sample_rate` | number | Original sample rate | `48000` |
 | `original_bitrate` | number | Original bitrate (bps) | `160000` |
-| `file_name` | string | Audio filename | `"Jq7llIkbJeA.wav"` |
-| `file_size` | number | File size in bytes | `32123442` |
+| `file_name` | string | Audio filename | `"Jq7llIkbJeA.m4a"` |
+| `file_size` | number | File size in bytes | `14256789` |
 | `file_path` | string | Relative path | `"Jq7llIkbJeA/..."` |
 
 ## Audio File Specifications
@@ -104,70 +104,64 @@ Each `{video_id}.json` file contains:
 
 According to the project requirements:
 
-#### ✅ **Mandatory Requirements**
+#### ✅ **Mandatory Requirements (Strict)**
 
-1. **Sample Rate ≥ 16 kHz**
-   - Current: **48 kHz** ✅
-   - Exceeds minimum requirement
+1. **Sample Rate = 44.1 kHz**
+   - Current: **44.1 kHz** ✅
+   - Exactly as required (not lower, not higher)
 
 2. **Mono Audio**
    - Current: **1 channel (mono)** ✅
    - Converted from stereo if needed
 
-3. **Filename = Video ID**
-   - Current: **`{video_id}.wav`** ✅
+3. **M4A Format**
+   - Current: **M4A (AAC codec)** ✅
+   - Efficient compression with good quality
+
+4. **Filename = Video ID**
+   - Current: **`{video_id}.m4a`** ✅
    - Easy to match with metadata
 
-#### 🎯 **Preferred Settings**
+#### 🎯 **Quality Settings**
 
-1. **Uncompressed/Lossless Format**
-   - Current: **WAV (uncompressed)** ✅
-   - Alternative: FLAC (lossless compression)
+1. **AAC Codec**
+   - Bitrate: **192 kbps**
+   - Good balance of quality and file size
 
-2. **High Sample Rate**
-   - Current: **48 kHz** ✅
-   - Options: 44.1 kHz, 48 kHz
+2. **Mono Channel**
+   - Reduced file size
+   - Suitable for speech/single speaker content
 
-### Changing Audio Format
+### Audio Format Configuration
 
-#### To Use FLAC Instead of WAV
+#### Current: M4A (Strict Requirement)
 
-Edit `tasks.py` line 69:
+The audio format is set to M4A with 44.1kHz sample rate as per project requirements.
+
+**Configuration in `tasks.py` line 69:**
 
 ```python
-# Change from:
-'preferredcodec': 'wav',
-
-# To:
-'preferredcodec': 'flac',
+'preferredcodec': 'm4a',  # M4A format (AAC codec)
+'preferredquality': '192', # 192 kbps bitrate
 ```
 
-**Benefits of FLAC:**
-- Lossless compression (same quality as WAV)
-- Smaller file size (~50-60% of WAV)
-- Preserves all audio information
+**Benefits of M4A:**
+- Good compression ratio (~50% smaller than WAV)
+- High audio quality (AAC codec)
+- Wide compatibility
+- Efficient for storage and streaming
 
-**When to use WAV:**
-- Maximum compatibility
-- No processing overhead
-- Some tools don't support FLAC
+**⚠️ Important:** Do not change the format without approval, as 44.1kHz M4A is a strict requirement.
 
-#### To Adjust Sample Rate
+#### Sample Rate (Fixed at 44.1kHz)
 
 Edit `tasks.py` line 87:
 
 ```python
-# Current (48 kHz):
-'-ar', '48000',
-
-# For 44.1 kHz:
-'-ar', '44100',
-
-# For 16 kHz (minimum):
-'-ar', '16000',
+'-ar', '44100',  # 44.1kHz (strict requirement)
 ```
 
-**Recommended:** Stick with 48 kHz for maximum quality.
+**⚠️ Important:** The sample rate is fixed at 44.1kHz as per project requirements. Do not change this value.
 
 #### To Keep Stereo (Not Convert to Mono)
 
@@ -363,15 +357,15 @@ YouTube video IDs are:
 
 ### Audio File Extensions
 
-| Extension | Format | Compression | Quality |
-|-----------|--------|-------------|---------|
-| `.wav` | WAV | None | Lossless ✅ |
-| `.flac` | FLAC | Lossless | Lossless ✅ |
-| `.m4a` | AAC | Lossy | High |
-| `.opus` | Opus | Lossy | High |
-| `.mp3` | MP3 | Lossy | Medium |
+| Extension | Format | Compression | Quality | Current |
+|-----------|--------|-------------|---------|---------|
+| `.m4a` | AAC | Lossy | High | ✅ **Active** |
+| `.wav` | WAV | None | Lossless | - |
+| `.flac` | FLAC | Lossless | Lossless | - |
+| `.opus` | Opus | Lossy | High | - |
+| `.mp3` | MP3 | Lossy | Medium | - |
 
-**Current Default:** `.wav` (uncompressed)
+**Current Default:** `.m4a` (M4A/AAC, 44.1kHz, 192kbps)
 
 ## Troubleshooting
 
@@ -401,13 +395,13 @@ metadata['audio']['file_name']  # e.g., "Jq7llIkbJeA.wav"
 
 ### Problem: File Size Too Large
 
-**Solution:** Switch to FLAC for compression:
-```python
-# In tasks.py line 69
-'preferredcodec': 'flac',
-```
+**Current Solution:** M4A format is already optimized for file size.
 
-FLAC provides same quality at ~50-60% file size.
+- M4A (AAC 192kbps): ~14 MB per 10 minutes
+- Already ~50% smaller than WAV
+- Good balance of quality and size
+
+**Note:** Format is fixed at M4A per project requirements.
 
 ### Problem: Missing Fields in Metadata
 
@@ -430,10 +424,11 @@ metadata['like_count']  # May be 0 if unavailable
 - Detailed audio specifications
 - Easy to parse and validate
 
-✅ **Audio Requirements Met:**
-- Sample rate: 48 kHz (≥16 kHz ✓)
+✅ **Audio Requirements Met (Strict):**
+- Sample rate: 44.1 kHz (exact requirement ✓)
 - Channels: Mono (1 channel ✓)
-- Format: WAV (uncompressed ✓)
+- Format: M4A (AAC codec ✓)
+- Bitrate: 192 kbps ✓
 - Filename: Video ID ✓
 
 🎯 **Ready for:**
@@ -441,3 +436,8 @@ metadata['like_count']  # May be 0 if unavailable
 - Audio dataset creation
 - TTS/VC training
 - Data cleansing
+
+💾 **Storage Efficiency:**
+- M4A format: ~50% smaller than WAV
+- Maintains high audio quality
+- Suitable for large-scale downloads

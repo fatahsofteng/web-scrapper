@@ -100,10 +100,10 @@ Create a custom channel list file and use the endpoint above.
 ```
 downloads/
 ├── Jq7llIkbJeA/                 # Video ID directory
-│   ├── Jq7llIkbJeA.wav          # Audio file (48kHz, mono, WAV)
+│   ├── Jq7llIkbJeA.m4a          # Audio file (44.1kHz, mono, M4A)
 │   └── Jq7llIkbJeA.json         # Metadata
 ├── dQw4w9WgXcQ/
-│   ├── dQw4w9WgXcQ.wav
+│   ├── dQw4w9WgXcQ.m4a
 │   └── dQw4w9WgXcQ.json
 └── ...
 ```
@@ -120,8 +120,8 @@ Each JSON file contains:
   "duration_sec": 512.23,
   "upload_date": "20231115",
   "audio": {
-    "codec": "wav",
-    "sample_rate": 48000,
+    "codec": "m4a",
+    "sample_rate": 44100,
     "channels": 1,
     "file_size": 32123442
   }
@@ -173,31 +173,29 @@ RATE_LIMIT = '1M'
 
 ## 🎵 Audio Format Specifications
 
-### Current Settings
+### Current Settings (Strict Requirements)
 
-- **Format:** WAV (uncompressed)
-- **Sample Rate:** 48 kHz
+- **Format:** M4A (AAC codec)
+- **Sample Rate:** 44.1 kHz (44100 Hz)
 - **Channels:** 1 (mono)
-- **Bit Depth:** 16-bit
-- **Filename:** `{video_id}.wav`
+- **Bitrate:** 192 kbps
+- **Filename:** `{video_id}.m4a`
 
 ### Meets Requirements ✅
 
 | Requirement | Setting | Status |
 |-------------|---------|--------|
-| Sample Rate ≥ 16 kHz | 48 kHz | ✅ |
+| Sample Rate = 44 kHz | 44.1 kHz | ✅ |
 | Mono audio | 1 channel | ✅ |
-| Uncompressed format | WAV | ✅ |
-| Filename = Video ID | `{video_id}.wav` | ✅ |
+| M4A format | M4A (AAC) | ✅ |
+| Filename = Video ID | `{video_id}.m4a` | ✅ |
 
-### Alternative: Use FLAC
+### Why M4A?
 
-To save storage space (~50-60% smaller, same quality):
-
-Edit `tasks.py:69`:
-```python
-'preferredcodec': 'flac',  # Change from 'wav'
-```
+- **Good compression:** Smaller file size than WAV/FLAC
+- **High quality:** AAC codec provides excellent audio quality
+- **Wide compatibility:** Supported by most audio processing tools
+- **Efficient:** Better for storage and transfer
 
 📖 **Full Documentation:** See [METADATA_STRUCTURE.md](METADATA_STRUCTURE.md)
 
@@ -330,10 +328,10 @@ With default rate limiting:
 
 Estimate:
 - Average video: 10 minutes
-- WAV @ 48kHz mono: ~30 MB per 10 minutes
-- 1000 videos: ~30 GB
+- M4A @ 44.1kHz mono, 192kbps: ~14 MB per 10 minutes
+- 1000 videos: ~14 GB
 
-Use FLAC to reduce by 40-50%.
+Much more efficient than WAV format (saves ~50% storage).
 
 ### Scaling
 
@@ -387,18 +385,25 @@ The included "創用CC_50個YT頻道.txt" contains channels that publish Creativ
 
 ## 🔄 Recent Updates
 
+### v2.1 - Audio Format Update (M4A + 44.1kHz)
+
+**Changes:**
+- ✅ Updated audio format to M4A (AAC codec) for better compression
+- ✅ Changed sample rate to 44.1kHz (strict requirement)
+- ✅ Optimized storage: ~50% smaller than WAV format
+- ✅ Maintained audio quality with 192kbps bitrate
+
 ### v2.0 - Rate Limiting & Metadata Enhancement
 
 **Changes:**
 - ✅ Added comprehensive rate limiting (sleep intervals, speed limits)
 - ✅ Implemented proper metadata storage (1 folder per video)
-- ✅ Upgraded audio format (WAV, 48kHz, mono)
 - ✅ Added retry mechanism for failed downloads
 - ✅ Enhanced logging and error handling
 
 **Migration from v1:**
 - Old: `downloads/{uploader}/{title}.mp3`
-- New: `downloads/{video_id}/{video_id}.wav`
+- New: `downloads/{video_id}/{video_id}.m4a`
 
 ## 🤝 Contributing
 
