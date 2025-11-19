@@ -62,12 +62,12 @@ def download_video(video_url: str, channel_url: str = None):
 
     # Configure yt-dlp with rate limiting and proper audio format
     ydl_opts = {
-        # Audio format: prefer WAV/FLAC with high sample rate
+        # Audio format: M4A with 44kHz sample rate (strict requirement)
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'wav',  # WAV for uncompressed audio
-            'preferredquality': '0',   # Best quality
+            'preferredcodec': 'm4a',  # M4A format (AAC codec)
+            'preferredquality': '192',   # Good quality bitrate
         }, {
             'key': 'FFmpegMetadata',
             'add_metadata': True,
@@ -84,7 +84,7 @@ def download_video(video_url: str, channel_url: str = None):
 
         # Audio processing
         'postprocessor_args': [
-            '-ar', '48000',  # Sample rate: 48kHz (meets ≥16kHz requirement)
+            '-ar', '44000',  # Sample rate: 44kHz exact (strict requirement)
             '-ac', '1',      # Convert to mono (1 channel)
         ],
 
@@ -139,8 +139,8 @@ def download_video(video_url: str, channel_url: str = None):
 
                 # Audio Metadata (will be updated after download)
                 "audio": {
-                    "codec": "wav",
-                    "sample_rate": 48000,  # Our target sample rate
+                    "codec": "m4a",
+                    "sample_rate": 44000,  # 44kHz exact (strict requirement)
                     "channels": 1,         # Mono
                     "original_codec": info.get('acodec', ''),
                     "original_sample_rate": info.get('asr', 0),
