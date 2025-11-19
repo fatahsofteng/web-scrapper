@@ -13,7 +13,7 @@ Each video is stored in its own directory named by the video ID:
 ```
 downloads/
 ├── Jq7llIkbJeA/                 # Video ID directory
-│   ├── Jq7llIkbJeA.m4a          # Audio file (M4A, 44.1kHz)
+│   ├── Jq7llIkbJeA.m4a          # Audio file (M4A, 44kHz)
 │   └── Jq7llIkbJeA.json         # Metadata file
 ├── dQw4w9WgXcQ/
 │   ├── dQw4w9WgXcQ.m4a
@@ -54,7 +54,7 @@ Each `{video_id}.json` file contains:
 
   "audio": {
     "codec": "m4a",
-    "sample_rate": 44100,
+    "sample_rate": 44000,
     "channels": 1,
     "original_codec": "opus",
     "original_sample_rate": 48000,
@@ -89,7 +89,7 @@ Each `{video_id}.json` file contains:
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
 | `codec` | string | Output audio codec | `"m4a"` |
-| `sample_rate` | number | Output sample rate (Hz) | `44100` |
+| `sample_rate` | number | Output sample rate (Hz) | `44000` |
 | `channels` | number | Number of audio channels | `1` (mono) |
 | `original_codec` | string | YouTube's original codec | `"opus"` |
 | `original_sample_rate` | number | Original sample rate | `48000` |
@@ -106,9 +106,9 @@ According to the project requirements:
 
 #### ✅ **Mandatory Requirements (Strict)**
 
-1. **Sample Rate = 44.1 kHz**
-   - Current: **44.1 kHz** ✅
-   - Exactly as required (not lower, not higher)
+1. **Sample Rate = 44 kHz (44000 Hz exact)**
+   - Current: **44 kHz (44000 Hz)** ✅
+   - Exactly as required - not 44.1kHz (44100 Hz)
 
 2. **Mono Audio**
    - Current: **1 channel (mono)** ✅
@@ -136,9 +136,9 @@ According to the project requirements:
 
 #### Current: M4A (Strict Requirement)
 
-The audio format is set to M4A with 44.1kHz sample rate as per project requirements.
+The audio format is set to M4A with 44kHz sample rate as per project requirements.
 
-**Configuration in `tasks.py` line 69:**
+**Configuration in `tasks.py` line 65:**
 
 ```python
 'preferredcodec': 'm4a',  # M4A format (AAC codec)
@@ -151,17 +151,17 @@ The audio format is set to M4A with 44.1kHz sample rate as per project requireme
 - Wide compatibility
 - Efficient for storage and streaming
 
-**⚠️ Important:** Do not change the format without approval, as 44.1kHz M4A is a strict requirement.
+**⚠️ Important:** Do not change the format without approval, as 44kHz M4A is a strict requirement.
 
-#### Sample Rate (Fixed at 44.1kHz)
+#### Sample Rate (Fixed at 44kHz - 44000 Hz exact)
 
 Edit `tasks.py` line 87:
 
 ```python
-'-ar', '44100',  # 44.1kHz (strict requirement)
+'-ar', '44000',  # 44kHz exact (strict requirement)
 ```
 
-**⚠️ Important:** The sample rate is fixed at 44.1kHz as per project requirements. Do not change this value.
+**⚠️ Important:** The sample rate is fixed at 44000 Hz (44kHz exact), NOT 44100 Hz (44.1kHz). Do not change this value.
 
 #### To Keep Stereo (Not Convert to Mono)
 
@@ -365,7 +365,7 @@ YouTube video IDs are:
 | `.opus` | Opus | Lossy | High | - |
 | `.mp3` | MP3 | Lossy | Medium | - |
 
-**Current Default:** `.m4a` (M4A/AAC, 44.1kHz, 192kbps)
+**Current Default:** `.m4a` (M4A/AAC, 44kHz/44000Hz, 192kbps)
 
 ## Troubleshooting
 
@@ -425,7 +425,7 @@ metadata['like_count']  # May be 0 if unavailable
 - Easy to parse and validate
 
 ✅ **Audio Requirements Met (Strict):**
-- Sample rate: 44.1 kHz (exact requirement ✓)
+- Sample rate: 44 kHz / 44000 Hz exact (NOT 44.1kHz ✓)
 - Channels: Mono (1 channel ✓)
 - Format: M4A (AAC codec ✓)
 - Bitrate: 192 kbps ✓

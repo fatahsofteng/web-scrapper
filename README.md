@@ -100,7 +100,7 @@ Create a custom channel list file and use the endpoint above.
 ```
 downloads/
 ├── Jq7llIkbJeA/                 # Video ID directory
-│   ├── Jq7llIkbJeA.m4a          # Audio file (44.1kHz, mono, M4A)
+│   ├── Jq7llIkbJeA.m4a          # Audio file (44kHz, mono, M4A)
 │   └── Jq7llIkbJeA.json         # Metadata
 ├── dQw4w9WgXcQ/
 │   ├── dQw4w9WgXcQ.m4a
@@ -121,7 +121,7 @@ Each JSON file contains:
   "upload_date": "20231115",
   "audio": {
     "codec": "m4a",
-    "sample_rate": 44100,
+    "sample_rate": 44000,
     "channels": 1,
     "file_size": 32123442
   }
@@ -176,7 +176,7 @@ RATE_LIMIT = '1M'
 ### Current Settings (Strict Requirements)
 
 - **Format:** M4A (AAC codec)
-- **Sample Rate:** 44.1 kHz (44100 Hz)
+- **Sample Rate:** 44 kHz (44000 Hz) - exact value
 - **Channels:** 1 (mono)
 - **Bitrate:** 192 kbps
 - **Filename:** `{video_id}.m4a`
@@ -185,7 +185,7 @@ RATE_LIMIT = '1M'
 
 | Requirement | Setting | Status |
 |-------------|---------|--------|
-| Sample Rate = 44 kHz | 44.1 kHz | ✅ |
+| Sample Rate = 44 kHz | 44 kHz (44000 Hz) | ✅ |
 | Mono audio | 1 channel | ✅ |
 | M4A format | M4A (AAC) | ✅ |
 | Filename = Video ID | `{video_id}.m4a` | ✅ |
@@ -328,7 +328,7 @@ With default rate limiting:
 
 Estimate:
 - Average video: 10 minutes
-- M4A @ 44.1kHz mono, 192kbps: ~14 MB per 10 minutes
+- M4A @ 44kHz mono, 192kbps: ~14 MB per 10 minutes
 - 1000 videos: ~14 GB
 
 Much more efficient than WAV format (saves ~50% storage).
@@ -385,11 +385,11 @@ The included "創用CC_50個YT頻道.txt" contains channels that publish Creativ
 
 ## 🔄 Recent Updates
 
-### v2.1 - Audio Format Update (M4A + 44.1kHz)
+### v2.1 - Audio Format Update (M4A + 44kHz)
 
 **Changes:**
 - ✅ Updated audio format to M4A (AAC codec) for better compression
-- ✅ Changed sample rate to 44.1kHz (strict requirement)
+- ✅ Changed sample rate to 44kHz / 44000 Hz exact (strict requirement)
 - ✅ Optimized storage: ~50% smaller than WAV format
 - ✅ Maintained audio quality with 192kbps bitrate
 

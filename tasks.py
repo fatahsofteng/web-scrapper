@@ -84,7 +84,7 @@ def download_video(video_url: str, channel_url: str = None):
 
         # Audio processing
         'postprocessor_args': [
-            '-ar', '44100',  # Sample rate: 44.1kHz (strict requirement)
+            '-ar', '44000',  # Sample rate: 44kHz exact (strict requirement)
             '-ac', '1',      # Convert to mono (1 channel)
         ],
 
@@ -140,7 +140,7 @@ def download_video(video_url: str, channel_url: str = None):
                 # Audio Metadata (will be updated after download)
                 "audio": {
                     "codec": "m4a",
-                    "sample_rate": 44100,  # 44.1kHz (strict requirement)
+                    "sample_rate": 44000,  # 44kHz exact (strict requirement)
                     "channels": 1,         # Mono
                     "original_codec": info.get('acodec', ''),
                     "original_sample_rate": info.get('asr', 0),
