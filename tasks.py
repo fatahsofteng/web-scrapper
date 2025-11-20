@@ -34,11 +34,12 @@ def get_decodo_proxy_url():
 
 # --- RATE LIMITING CONFIGURATION ---
 # These settings help avoid 403 bans from YouTube by slowing down requests
-SLEEP_BETWEEN_VIDEOS = 5  # seconds to sleep between each video download
-SLEEP_INTERVAL_MIN = 3     # minimum random sleep between requests (seconds)
-SLEEP_INTERVAL_MAX = 8     # maximum random sleep between requests (seconds)
-MAX_DOWNLOADS_PER_HOUR = 50  # Conservative limit to avoid detection
-RATE_LIMIT = '500K'        # Limit download speed to 500KB/s (looks more human)
+# Conservative settings for free tier (no proxy/IP rotator)
+SLEEP_BETWEEN_VIDEOS = 15  # seconds to sleep between each video download
+SLEEP_INTERVAL_MIN = 10    # minimum random sleep between requests (seconds)
+SLEEP_INTERVAL_MAX = 20    # maximum random sleep between requests (seconds)
+MAX_DOWNLOADS_PER_HOUR = 30  # Very conservative limit to avoid detection
+RATE_LIMIT = '200K'        # Limit download speed to 200KB/s (very conservative)
 
 
 
