@@ -6,7 +6,7 @@
 
 ## **1.1 Task Overview**
 
- The purpose of this task is to **automate** the process of **capturing audio and metadata of all videos from multiple YouTube channels in a batch** for subsequent **ASR calibration, audio dataset creation, TTS/VC training, and data cleansing**.
+ The purpose of this task is to **automate** the process of **capturing audio and metadata of all the videos in batches from multiple YouTube channels** for subsequent **ASR calibration, audio dataset creation, TTS/VC training, and data cleansing**.
 
  In the end, the system will automatically list all the public videos of the channel according to the channel URL in the "Channel List File":
 
@@ -37,12 +37,16 @@
     
 2.  3rd party API + google official streaming download link demo code:
     
-    [https://drive.google.com/file/d/1yrSli8OZiOYdJH4VuMOBuqUdpVGIGCO_/view?usp=drive_link](https://www.notion.so/2af73351e87380898e1fd0e02cbe18d5?pvs=21) 
+    https://drive.google.com/file/d/1AFsZEdUBo5h48Crm3kfikb6l_tt8Ke5B/view?usp=sharing
+    
+3.  Calculate the number of channel movies:
+    
+    [創用CC_50個YT頻道.csv](attachment:27d696d7-c489-42fb-8f6c-cc01021c142e:創用CC_50個YT頻道.csv)
     
 
 ## **3. 🎯 Core Tasks**
 
-### **###3. 🎯 Core Tasks**
+### **###**
 
 ### **3.1 Downloading audio files (Audio Download)**
 
@@ -56,7 +60,7 @@
 
  Select a tool (choose one):
 
-| **Tools** | **Pros** | **Disadvantages of the tool** |
+| **Tools** | **Pros** | **DISADVANTAGES** |
 | --- | --- | --- |
 | **yt-dlp (recommended)** |  Stable, high speed, flexible format selection, cookies support, automatic sound quality optimization |  No official API |
 |  YouTube API + yt-dlp |  API for more reliable information |  API quota limit |
@@ -67,7 +71,7 @@
 
 1.  3rd party API + google official streaming download link:
     
-    https://drive.google.com/file/d/1yrSli8OZiOYdJH4VuMOBuqUdpVGIGCO_/view?usp=drive_link
+    https://drive.google.com/file/d/1AFsZEdUBo5h48Crm3kfikb6l_tt8Ke5B/view?usp=sharing
     
 
 ---
@@ -101,7 +105,7 @@
   "bit_rate": 160000,
   "channels": 2,
   "duration_sec": 512.23,
-  "file_size": 32_123_442ㄆ
+  "file_size": 32_123_442
 }
 ```
 
@@ -125,4 +129,53 @@ Jq7llIkbJeA.m4a
 ### **⭕ not mandatory, but preferred**
 
 - If available in **uncompressed format (WAV) or lossless (FLAC)** → select the highest quality.
-- If you can only download Opus/AAC → download the highest bit rate version (but without downloading too high quality audio files, try to **have a Sample Rate < 48 kHz** )
+- If you can only download Opus/AAC → download the highest bit rate version (but do not download too high quality files, try to **have a Sample Rate < 48 kHz** ).
+
+---
+
+## Select the direction of practice and follow-up:
+
+1.  yt-dlp (@Rispal Gibar & @Fatahillah in progress...)
+    
+     1.1. Cost calculation:
+    
+    - One IP can crawl and download 30 audio files . 10857 audio files in total. 362 IPs are needed.
+    - How much would it cost to buy IP VAT for three sites?
+        - https://decodo.com/proxies/isp-proxies/pricing
+            
+             (IP will not repeat) **Dedicated:**200*2.5+100*2.6+50*2.7+10*2.9+3*3.33 = **933.99 $USD**
+            
+            **Pay per IP:**100*0.35*3+50*0.4+10*0.47*2 = **134.4 $USD**
+            
+        - https://oxylabs.io/pricing/isp-proxies
+            
+             (IP may repeat) ISP Proxies: 200*1.3+100*1.3+50*1.45+10*1.6*2 = 494.5 $USD
+            
+             (IP may not be duplicated) Dedicated: contact sales
+            
+        - https://brightdata.com/products/web-scraper
+            - Billing by number of requests Assuming one request per audio file.
+            
+            (IP may repeat) Pay as you go: 10857/1000*1.5 = 16.2855 $USD(no additional VAT charge for requests, additional charge if over 100GB using monthly fee)
+            
+    
+     1.2 Download rate:
+    
+    - **yt-dlp**  need to be evaluated in Fatah please!
+    
+2.  google official streaming URL download method (Hoan test demo code, can provide movie URL for batch auto download audio files)
+    - Looks like the official streaming download method for Android VR.
+    
+     2.1. Cost calculation:
+    
+    - https://turboscribe.ai/zh-TW/downloader get google official streaming download link need to pay account unlimited use: 20 $USD/month ⇒ free users have IP lock, one day to get a limited number (test about 100)
+    
+     2.2 Download rate:
+    
+    - Calculation formula:
+        - google official streaming download link: 3 lines about 70 KB/s, 12 lines about 164 KB/s, fluctuating but with a basic speed limit
+        - 12-line efficiency about download 12 audio files (total length audio file seconds 2240 seconds)/238 (seconds) = `9.4111 audio file length / 1 second`, the test is about **`6.7532 Duration/s`~**`9.4111 **Duration/s`** between
+    - Download a file time:
+        - (The length of the audio file varies from channel to channel, this is only a preliminary calculation of the length of the audio file in the three channels) about  `**38.83s`,`20.14s`,`19.83s`,`31.26s`to do the average calculation = 110.06 ÷ 4 = 27.52s**
+    - Time to download all audio files from all 50 channels of  ****:
+        - **27.52s(assuming each audio file download time) ×** 10857 audio files (number of all movies on 50 channels) = **298784.64s (83 hours == 3.46 days)**
