@@ -7,7 +7,11 @@ from pathlib import Path
 from celery import Celery
 import yt_dlp
 
-celery_app = Celery('tasks', broker='redis://localhost:6379/0')
+celery_app = Celery(
+    'tasks',
+    broker='redis://localhost:6379/0',
+    backend='redis://localhost:6379/0'  # Enable result backend
+)
 
 # --- DECODO PROXY CONFIGURATION ---
 DECODO_USER = os.environ.get('DECODO_USER')
