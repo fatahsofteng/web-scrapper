@@ -15,6 +15,12 @@ DECODO_PASS = os.environ.get('DECODO_PASS')
 DECODO_HOST = "gate.decodo.com"
 DECODO_PORT = "7000"
 
+# --- COOKIE AUTHENTICATION CONFIGURATION ---
+# For bypassing YouTube bot detection (proven to work in Colab testing)
+# Set environment variable YOUTUBE_COOKIES_FILE to path of cookies file
+# Export cookies from browser: https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp
+YOUTUBE_COOKIES_FILE = os.environ.get('YOUTUBE_COOKIES_FILE')
+
 
 def get_decodo_proxy_url():
     """
@@ -81,7 +87,7 @@ def download_video(video_url: str, channel_url: str = None):
         'sleep_interval': SLEEP_BETWEEN_VIDEOS,
         'max_sleep_interval': SLEEP_INTERVAL_MAX,
         'sleep_interval_requests': 1,  # Sleep 1 second between API requests
-        'ratelimit': RATE_LIMIT,       # Limit download speed
+        # NOTE: ratelimit removed - caused type error, cookies handle throttling naturally
 
         # Audio processing
         'postprocessor_args': [
@@ -103,6 +109,11 @@ def download_video(video_url: str, channel_url: str = None):
         print(f"Downloading {video_url} via Decodo proxy...")
     else:
         print(f"Downloading {video_url} without proxy...")
+
+    # Add cookie authentication if available
+    if YOUTUBE_COOKIES_FILE and Path(YOUTUBE_COOKIES_FILE).exists():
+        ydl_opts['cookiefile'] = YOUTUBE_COOKIES_FILE
+        print(f"Using cookie authentication from: {YOUTUBE_COOKIES_FILE}")
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -195,6 +206,11 @@ def scrape_channel_videos(channel_url: str):
         print(f"Scraping channel {channel_url} via Decodo proxy...")
     else:
         print(f"Scraping channel {channel_url} without proxy...")
+
+    # Add cookie authentication if available
+    if YOUTUBE_COOKIES_FILE and Path(YOUTUBE_COOKIES_FILE).exists():
+        ydl_opts['cookiefile'] = YOUTUBE_COOKIES_FILE
+        print(f"Using cookie authentication from: {YOUTUBE_COOKIES_FILE}")
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
