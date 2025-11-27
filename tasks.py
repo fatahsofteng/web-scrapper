@@ -95,8 +95,10 @@ def download_video(video_url: str, channel_url: str = None):
 
         # Audio processing
         'postprocessor_args': [
-            '-ar', '44000',  # Sample rate: 44kHz exact (strict requirement)
-            '-ac', '1',      # Convert to mono (1 channel)
+            '-c:a', 'aac',              # Force AAC encoding (disable streamcopy)
+            '-af', 'aresample=44000',   # Resample to 44kHz via filter (bypass AAC limitation)
+            '-ac', '1',                 # Convert to mono (1 channel)
+            '-b:a', '192k',             # Bitrate 192kbps
         ],
 
         # Additional settings
